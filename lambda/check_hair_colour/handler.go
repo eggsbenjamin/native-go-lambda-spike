@@ -1,6 +1,9 @@
-package age_check
+package main
 
-import "github.com/eggsbenjamin/native-go-lambda-spike/models"
+import (
+	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/eggsbenjamin/native-go-lambda-spike/models"
+)
 
 func HairColourCheck(person *models.Person) (*models.Person, error) {
 	if person.HairColour != "ginger" {
@@ -8,4 +11,8 @@ func HairColourCheck(person *models.Person) (*models.Person, error) {
 	}
 
 	return person, nil
+}
+
+func main() {
+	lambda.Start(HairColourCheck)
 }

@@ -1,4 +1,4 @@
-package age_check
+package main
 
 import "fmt"
 

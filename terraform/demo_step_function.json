@@ -1,0 +1,58 @@
+{
+  "Comment" : "Demo Step Function",
+  "StartAt" : "AgeCheck",
+  "States" : {
+    "AgeCheck" : {
+      "Type" : "Task",
+      "Resource" : "${age_check_arn}",
+      "Next" : "CheckHairColour",
+      "Catch": [
+        {
+          "ErrorEquals": ["ErrInvalidAge"],
+          "Next": "UnderAge"
+        }
+      ]
+    },
+    "CheckHairColour" : {
+      "Type" : "Task",
+      "Resource" : "${check_hair_colour_arn}",
+      "Next" : "HasGingerFriends",
+      "Catch": [
+        {
+          "ErrorEquals": ["ErrHairColour"],
+          "Next": "NotCool"
+        }
+      ]
+    },
+    "HasGingerFriends" : {
+      "Type" : "Task",
+      "Resource" : "${has_ginger_friends}",
+      "Next" : "Cool",
+      "Catch": [
+        {
+          "ErrorEquals": ["ErrNoGingerFriends"],
+          "Next": "NotCool"
+        }
+      ]
+    },
+    "UnderAge" : {
+      "Type" : "Task",
+      "Resource" : "${under_age_arn}",
+      "End" : true
+    },
+    "Cool" : {
+      "Type" : "Task",
+      "Resource" : "${cool_arn}",
+      "Next" : "Success"
+    },
+    "NotCool" : {
+      "Type" : "Task",
+      "Resource" : "${not_cool_arn}",
+      "End" : true
+    },
+    "Success": {
+      "Type": "Succeed"
+    }
+  }
+}
+
