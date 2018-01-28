@@ -19,5 +19,5 @@ build: test
 	done
 
 deploy: build
-	cd ./terraform; TF_VAR_tag=$$tag'_' terraform apply -auto-approve
+	cd ./terraform; TF_VAR_tag=$$tag'_' terraform apply -auto-approve -state=$$tag.tfstate
 	
