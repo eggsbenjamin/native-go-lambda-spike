@@ -1,7 +1,9 @@
 all:
-	for tag in "compression"; do \
+	set -e && for tag in $$(git tag --list); do \
+		git checkout tags/$$tag; \
 		tag=$$tag make deploy; \
 	done
+	git checkout master
 
 build:
 	mkdir -p artifacts
