@@ -5,7 +5,10 @@ all:
 	done
 	git checkout master
 
-build:
+test:
+	go test ./... -v
+
+build: test
 	mkdir -p artifacts
 	set -e && for pkg in $$(ls lambda); do \
 		out=$$pkg; \
