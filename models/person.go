@@ -2,10 +2,10 @@ package models
 
 import (
 	"bytes"
-	"compress/gzip"
 	"io/ioutil"
 
 	jsoniter "github.com/json-iterator/go"
+	"github.com/pierrec/lz4"
 )
 
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
@@ -39,14 +39,7 @@ func (p *Person) UnmarshalJSON(data []byte) error {
 
 	if len(wrapper.Friends) > 0 {
 		buf := bytes.NewBuffer(wrapper.Friends)
-		reader, err := gzip.NewReader(buf)
-		if err != nil {
-			return err
-		}
-
-		if err := reader.Close(); err != nil {
-			return err
-		}
+		reader := lz4.NewReader(buf)
 
 		raw, err := ioutil.ReadAll(reader)
 		if err != nil {
@@ -66,11 +59,8 @@ func (p *Person) MarshalJSON() ([]byte, error) {
 	}
 
 	var buf bytes.Buffer
-	writer, err := gzip.NewWriterLevel(&buf, gzip.BestSpeed)
+	writer := lz4.NewWriter(&buf)
 	defer writer.Close()
-	if err != nil {
-		return nil, err
-	}
 
 	if _, err := writer.Write(raw); err != nil {
 		return nil, err
