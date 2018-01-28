@@ -66,8 +66,11 @@ func (p *Person) MarshalJSON() ([]byte, error) {
 	}
 
 	var buf bytes.Buffer
-	writer := gzip.NewWriter(&buf)
+	writer, err := gzip.NewWriterLevel(&buf, gzip.BestSpeed)
 	defer writer.Close()
+	if err != nil {
+		return nil, err
+	}
 
 	if _, err := writer.Write(raw); err != nil {
 		return nil, err
