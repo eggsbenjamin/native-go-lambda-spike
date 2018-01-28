@@ -1,6 +1,5 @@
 all:
 	for tag in "compression"; do \
-		tag=$$tag make build; \
 		tag=$$tag make deploy; \
 	done
 
@@ -14,6 +13,6 @@ build:
 		zip -j ./artifacts/$$out.zip ./artifacts/$$out; \
 	done
 
-deploy:
-	cd ./terraform; terraform apply -var 'tag=$$tag' -auto-approve
+deploy: build
+	cd ./terraform; TF_VAR_tag=$$tag'_' terraform apply -auto-approve
 	

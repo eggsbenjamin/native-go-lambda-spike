@@ -1,5 +1,5 @@
 resource "aws_sfn_state_machine" "demo_step_function" {
-  name     = "demo_demo_step_function"
+  name     = "${var.tag}step_function"
   role_arn = "${aws_iam_role.demo_step_function.arn}"
 
   definition = "${data.template_file.demo_step_function_config.rendered}"
